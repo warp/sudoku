@@ -1,9 +1,8 @@
 while true
   gets.split("\n").each do |puzzle|
-    puzzle = puzzle.chars.map(&:to_i)
 
-    def check(puzzle, x, d)
-      ![row(puzzle, x), column(puzzle, x), block(puzzle, x)].flatten.include?(d)
+    def check(puzzle, x, c)
+      ![row(puzzle, x), column(puzzle, x), block(puzzle, x)].join.include?(c)
     end
 
     def row(puzzle, x)
@@ -15,25 +14,25 @@ while true
     end
 
     def block(puzzle, x)
-      (0..2).map {|i| puzzle.slice((i*9)+(x/27*27)+(x%9/3*3), 3)}.flatten
+      (0..2).map {|i| puzzle.slice((i*9)+(x/27*27)+(x%9/3*3), 3)}.join
     end
 
     def solve(solution)
-      if x = solution.find_index(0)
-        (1..9).each do |d|
-          if check(solution, x, d)
-            solution[x] = d
-            # puts "#{solution.join}:#{x}:#{d}"
+      if x = solution =~ /0/
+        ("1".."9").each do |c|
+          if check(solution, x, c)
+            solution[x] = c
+            # puts "#{solution}:#{x}:#{c}"
             return solution if solve(solution)
           end
         end
-        solution[x] = 0
+        solution[x] = "0"
         false
       else
         solution
       end
     end
 
-    puts solve(puzzle).join
+    puts solve(puzzle)
   end
 end
