@@ -3,13 +3,13 @@ require 'set'
 while puzzle = gets
 
   def options(puzzle, size, x)
-    symbols(puzzle, size) -
+    symbols(size) -
       row(puzzle, size, x) -
       column(puzzle, size, x) -
       block(puzzle, size, x)
   end
 
-  def symbols(puzzle, size)
+  def symbols(size)
     Set.new((1..size).map {|i| i.to_s(16).upcase})
   end
 
@@ -23,7 +23,7 @@ while puzzle = gets
 
   def block(puzzle, size, x)
     s = Math.sqrt(size).to_i
-    Set.new((0..2).map {|i| puzzle[(i*size)+(x/(size*s)*(size*s))+(x%size/s*s), s]}.join.chars)
+    Set.new((0...s).map {|i| puzzle[(i*size)+(x/(size*s)*(size*s))+(x%size/s*s), s]}.join.chars)
   end
 
   def solve(puzzle, size)
